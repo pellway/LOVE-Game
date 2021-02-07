@@ -15,6 +15,12 @@ StartState = 1
 PlayState = 2
 PauseState = 3
 
+buttonSelect = 1
+buttonWidth = 300
+buttonHeight = 50
+buttonX = love.graphics.getWidth()/2 - (buttonWidth/2)
+buttonY = 550 
+
 function love.load()
 	io.write("Game initialised.\n")
 	love.keyboard.setKeyRepeat(true)
@@ -38,8 +44,20 @@ function love.update(dt)
 		love.graphics.setBackgroundColor(25/255, 25/255, 25/255, 1)
 		love.audio.stop(bgm)
 		
-		if (love.keyboard.isDown("return")) then
-			GameState = PlayState
+		function love.keypressed(key, scancode, isrepeat)
+			if key == "return" then
+				GameState = PlayState
+			end
+			if key == "escape" then
+				love.quit()
+			end
+
+			if (buttonSelect == 1) then
+
+
+			end
+
+
 		end
 	end
 	
@@ -49,8 +67,8 @@ function love.update(dt)
 		timer = timer + dt
 		if (timer >= 1) then
 			counter = counter + 1
-			if (counter % 5 == 0) then
-				io.write(tostring(counter) .. " seconds have elapsed during play.\n")
+			if (counter % 10 == 0) then
+				io.write(tostring(counter) .. " seconds have elapsed during play state.\n")
 			end
 			timer = 0
 		end
@@ -119,6 +137,20 @@ function love.mousereleased(x, y, button, istouch, presses)
 		end
 	end
 
+	-- Menu Button Selection
+	if (GameState == StartState) then
+		if (x >= buttonX and x < buttonX + buttonWidth) then
+			if (y >= buttonY and y < buttonY + buttonHeight) then
+				io.write("Start button pressed!\n")
+				GameState = PlayState
+			end
+			if (y >= buttonY + 75 and y < buttonY + 75 + buttonHeight) then
+				io.write("End button pressed!\n")
+				love.event.quit()
+			end
+		end
+	end
+
 end
 
 
@@ -126,6 +158,13 @@ function love.draw()
 	
 	if (GameState == StartState) then
 		love.graphics.print("Start State", 10, 10)
+		
+		-- Start Button
+		love.graphics.rectangle("line", buttonX, buttonY, buttonWidth, buttonHeight)
+		-- Exit Button
+		love.graphics.rectangle("line", buttonX, buttonY + 75, buttonWidth, buttonHeight)
+
+		
 	end
 
 	if (GameState == PlayState) then
@@ -149,4 +188,5 @@ end
 
 function love.quit()
 	io.write("Game terminated.\n")
+	love.event.quit()
 end
