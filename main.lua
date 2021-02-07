@@ -145,7 +145,7 @@ function love.mousereleased(x, y, button, istouch, presses)
 				GameState = PlayState
 			end
 			if (y >= buttonY + 75 and y < buttonY + 75 + buttonHeight) then
-				io.write("End button pressed!\n")
+				io.write("Quit button pressed!\n")
 				love.event.quit()
 			end
 		end
@@ -159,11 +159,11 @@ function love.draw()
 	if (GameState == StartState) then
 		love.graphics.print("Start State", 10, 10)
 		
-		-- Start Button
-		love.graphics.rectangle("line", buttonX, buttonY, buttonWidth, buttonHeight)
-		-- Exit Button
-		love.graphics.rectangle("line", buttonX, buttonY + 75, buttonWidth, buttonHeight)
-
+		-- Menu Buttons
+		startButton = love.graphics.newImage("Assets/startButton.png")
+		quitButton = love.graphics.newImage("Assets/quitButton.png")
+		love.graphics.draw(startButton, buttonX, buttonY)
+		love.graphics.draw(quitButton, buttonX, buttonY + 75)
 		
 	end
 
