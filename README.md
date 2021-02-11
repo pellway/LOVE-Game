@@ -9,6 +9,8 @@ Creating a top-down game with elements of state machines, I/O and general asset 
 * Different environments
 
 ## Resources
-https://github.com/love2d-community/awesome-love2d
-pixel art game resolution
-using tiled map editor in love
+https://github.com/love2d-community/awesome-love2d \n
+
+pixel art game resolution \n
+
+using tiled map editor in love \n
