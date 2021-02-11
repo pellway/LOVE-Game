@@ -1,14 +1,9 @@
 -- Game Exploration - Top Down
--- Created in LOVE (lua)
+-- Created in LOVE 11.3 (lua)
 -- Patrick Ellway
 
--- https://github.com/love2d-community/awesome-love2d
-
--- To Do:
--- Add GUI in start and pause menus (Buttons)
--- Add some enemies/trees
-
 require("Scripts.Player")
+require("Scripts.Fish")
 
 GameState = 0
 StartState = 1 
@@ -19,7 +14,9 @@ buttonSelect = 1
 buttonWidth = 300
 buttonHeight = 50
 buttonX = love.graphics.getWidth()/2 - (buttonWidth/2)
-buttonY = 550 
+buttonY = 550
+
+math.randomseed(os.time())
 
 function love.load()
 	io.write("Game initialised.\n")
@@ -158,6 +155,8 @@ function love.draw()
 	
 	if (GameState == StartState) then
 		love.graphics.print("Start State", 10, 10)
+
+		love.graphics.print("Game Logo Here!", love.graphics.getWidth()/2-200, love.graphics.getHeight()/2, 0, 4) -- Temp
 		
 		-- Menu Buttons
 		startButton = love.graphics.newImage("Assets/startButton.png")
