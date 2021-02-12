@@ -1,4 +1,4 @@
--- PLayer Attributes:
+-- Player Attributes:
 -- sprite 	 = 	current image to be displayed for the player
 -- x 		 = 	Horizontal axis, from the top left corner of the sprite
 -- y 		 = 	Vertical axis, from the top left corner of the sprite
@@ -22,6 +22,12 @@ Player.new = function(x, y, speed)
     -- Class Functions
     self.draw = function()
         love.graphics.draw(self.sprite, self.x, self.y)
+	end
+	
+	self.default = function()
+        self.x = 100
+		self.y = 120
+		self.sprite = self.spriteFront
     end
 
 	-- Player Movement
@@ -78,11 +84,17 @@ Player.new = function(x, y, speed)
 		end
 
 		-- Boundary collision
-		if (self.x >= 1230) then
-			self.x = 1230
+		if (self.x >= love.graphics.getWidth()-64) then
+			self.x = love.graphics.getWidth()-64
 		end
 		if (self.x <= 0) then
 			self.x = 0
+		end
+		if (self.y >= love.graphics.getHeight()-64) then
+			self.y = love.graphics.getHeight()-64
+		end
+		if (self.y <= 0) then
+			self.y = 0
 		end
 
 		-- If not moving, round to nearest integer
