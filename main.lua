@@ -14,7 +14,7 @@ buttonSelect = 1
 buttonWidth = 300
 buttonHeight = 50
 buttonX = love.graphics.getWidth()/2 - (buttonWidth/2)
-buttonY = 550
+buttonY = love.graphics.getHeight()/1.5
 
 math.randomseed(os.time())
 
@@ -27,7 +27,7 @@ function love.load()
 	bgm = love.audio.newSource("Audio/bgm.ogg", "stream")
 	sfx = love.audio.newSource("Audio/sfx.wav", "static")
 
-	player = Player.new(50, 100, 100)
+	player = Player.new(100, 120, 100)
 
 	GameState = 1
 
@@ -40,6 +40,7 @@ function love.update(dt)
 	if (GameState == StartState) then
 		love.graphics.setBackgroundColor(25/255, 25/255, 25/255, 1)
 		love.audio.stop(bgm)
+		player:default()
 		
 		function love.keypressed(key, scancode, isrepeat)
 			if key == "return" then
@@ -92,6 +93,8 @@ function love.update(dt)
 		function love.keypressed(key, scancode, isrepeat)
 			if key == "return" then
 				GameState = PlayState
+				
+				love.window.setMode(512*2, 288*2)
 			end
 			if key == "escape" then
 				GameState = StartState
@@ -140,8 +143,9 @@ function love.mousereleased(x, y, button, istouch, presses)
 			if (y >= buttonY and y < buttonY + buttonHeight) then
 				io.write("Start button pressed!\n")
 				GameState = PlayState
+				
 			end
-			if (y >= buttonY + 75 and y < buttonY + 75 + buttonHeight) then
+			if (y >= buttonY + 75 and y < buttonY + buttonHeight + buttonHeight/2 + buttonHeight) then
 				io.write("Quit button pressed!\n")
 				love.event.quit()
 			end
@@ -153,17 +157,16 @@ end
 
 function love.draw()
 	
+	love.graphics.setCanvas(canvas)
+
 	if (GameState == StartState) then
 		love.graphics.print("Start State", 10, 10)
-
-		love.graphics.print("Game Logo Here!", love.graphics.getWidth()/2-200, love.graphics.getHeight()/2, 0, 4) -- Temp
 		
 		-- Menu Buttons
 		startButton = love.graphics.newImage("Assets/startButton.png")
 		quitButton = love.graphics.newImage("Assets/quitButton.png")
 		love.graphics.draw(startButton, buttonX, buttonY)
-		love.graphics.draw(quitButton, buttonX, buttonY + 75)
-		
+		love.graphics.draw(quitButton, buttonX, buttonY + buttonHeight + buttonHeight/2)
 	end
 
 	if (GameState == PlayState) then
@@ -181,6 +184,11 @@ function love.draw()
 
 	if (GameState == PauseState) then
 		love.graphics.print("Pause State", 10, 10)
+
+		resumeButton = love.graphics.newImage("Assets/resumeButton.png")
+		quitButton = love.graphics.newImage("Assets/quitButton.png")
+		love.graphics.draw(resumeButton, buttonX, buttonY)
+		love.graphics.draw(quitButton, buttonX, buttonY + 75)
 	end
 
 end
