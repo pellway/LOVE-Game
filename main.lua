@@ -26,8 +26,9 @@ function love.load()
 
 	bgm = love.audio.newSource("Audio/bgm.ogg", "stream")
 	sfx = love.audio.newSource("Audio/sfx.wav", "static")
+	--love.audio.setVolume(0) -- To Mute
 
-	player = Player.new(100, 120, 100)
+	player = Player.new(100, 120, 100, 8)
 
 	GameState = 1
 
@@ -49,13 +50,6 @@ function love.update(dt)
 			if key == "escape" then
 				love.quit()
 			end
-
-			if (buttonSelect == 1) then
-
-
-			end
-
-
 		end
 	end
 	
@@ -77,9 +71,23 @@ function love.update(dt)
 		-- Function for player movement (Player.Lua)
 		player:move()
 
-		-- Activate Pause Menu
+		function addInventory(inventory, item)
+			table.insert(inventory, item)
+		end
+
 		function love.keypressed(key, scancode, isrepeat)
-			if key == "return" then
+			if key == "b" then -- Adds salmon
+				salmon = Fish.new("Salmon", "B")
+				addInventory(player.inventory, salmon)
+			end
+			if key == "p" then -- Prints inventory
+				size = table.getn(player.inventory)
+				io.write("Player's current inventory: \n")
+				for i = 1, size do
+					io.write(player.inventory[i]:getDetails())
+				end
+			end
+			if key == "return" then -- Activate Pause Menu
 				GameState = PauseState
 			end
 		end
@@ -137,7 +145,7 @@ function love.mousereleased(x, y, button, istouch, presses)
 		end
 	end
 
-	-- Menu Button Selection
+	-- Menu Button Selection for Start Screen
 	if (GameState == StartState) then
 		if (x >= buttonX and x < buttonX + buttonWidth) then
 			if (y >= buttonY and y < buttonY + buttonHeight) then
@@ -152,12 +160,25 @@ function love.mousereleased(x, y, button, istouch, presses)
 		end
 	end
 
+	-- Menu Button Selection for Pause Screen
+	if (GameState == PauseState) then
+		if (x >= buttonX and x < buttonX + buttonWidth) then
+			if (y >= buttonY and y < buttonY + buttonHeight) then
+				io.write("Resume button pressed!\n")
+				GameState = PlayState
+				
+			end
+			if (y >= buttonY + 75 and y < buttonY + buttonHeight + buttonHeight/2 + buttonHeight) then
+				io.write("Quit button pressed!\n")
+				GameState = StartState
+			end
+		end
+	end
+
 end
 
 
 function love.draw()
-	
-	love.graphics.setCanvas(canvas)
 
 	if (GameState == StartState) then
 		love.graphics.print("Start State", 10, 10)
@@ -180,6 +201,7 @@ function love.draw()
 
 		-- Function for player animation (Player.Lua)
 		player:draw()
+		
 	end
 
 	if (GameState == PauseState) then
