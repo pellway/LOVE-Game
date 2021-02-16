@@ -5,19 +5,23 @@
 -- movement  = 	Boolean value determining whether player is moving
 -- speed 	 = 	Integer modifer for how fast the player moves
 
+
+-- TODO: Make Inventory system
+
 Player = {}
 
-Player.new = function(x, y, speed)
+Player.new = function(x, y, speed, inventorySize)
     local self = self or {}
-	self.sprite = love.graphics.newImage("Assets/playerFront.png")
-	self.spriteFront = love.graphics.newImage("Assets/playerFront.png")
-	self.spriteBack = love.graphics.newImage("Assets/playerBack.png")
-	self.spriteLeft = love.graphics.newImage("Assets/playerLeft.png")
-	self.spriteRight = love.graphics.newImage("Assets/playerRight.png")
+	self.spriteFront = love.graphics.newImage("Assets/PlayerFront.png")
+	self.spriteBack = love.graphics.newImage("Assets/PlayerBack.png")
+	self.spriteLeft = love.graphics.newImage("Assets/PlayerLeft.png")
+	self.spriteRight = love.graphics.newImage("Assets/PlayerRight.png")
+	self.sprite = self.spriteFront
     self.x = x
     self.y = y
     self.movement = false
     self.speed = speed
+	self.inventory = {}
 
     -- Class Functions
     self.draw = function()
@@ -33,53 +37,56 @@ Player.new = function(x, y, speed)
 	-- Player Movement
 	self.move = function()
 		dt = love.timer.getDelta()
-		if (love.keyboard.isDown("a")) then
+		local isDown = love.keyboard.isDown
+
+		if (isDown("a")) then
 			self.x = self.x - self.speed * dt
 			self.sprite = self.spriteLeft
 			self.movement = true
 		end
-		if (love.keyboard.isDown("d")) then
+		if (isDown("d")) then
 			self.x = self.x + self.speed * dt
 			self.sprite = self.spriteRight
 			self.movement = true
 		end
-		if (love.keyboard.isDown("w")) then
+		if (isDown("w")) then
 			self.y = self.y - self.speed * dt
 			self.sprite = self.spriteBack
 			self.movement = true
 		end
-		if (love.keyboard.isDown("s")) then
+		if (isDown("s")) then
 			self.y = self.y + self.speed * dt
 			self.sprite = self.spriteFront
 			self.movement = true
 		end
 
 		-- Tracks whether player is stopped
-		if (love.keyboard.isDown("a") == true and love.keyboard.isDown("d") == true) then
-			self.sprite = self.spriteFront
-			if (love.keyboard.isDown("w") == true and love.keyboard.isDown("s") == false) then
+		if (isDown("a") == true and isDown("d") == true) then
+			self.movement = false
+			if (isDown("w") == true and isDown("s") == false) then
 				self.sprite = self.spriteBack
 				self.movement = true
-			elseif (love.keyboard.isDown("w") == false and love.keyboard.isDown("s") == true) then
+			elseif (isDown("w") == false and isDown("s") == true) then
 				self.sprite = self.spriteFront                                                        
 				self.movement = true
 			else
 				self.movement = false
 			end
 		end
-		if (love.keyboard.isDown("w") == true and love.keyboard.isDown("s") == true) then
+		if (isDown("w") == true and isDown("s") == true) then
 			self.sprite = self.spriteFront
-			if (love.keyboard.isDown("a") == true and love.keyboard.isDown("d") == false) then
+			if (isDown("a") == true and isDown("d") == false) then
 				self.sprite = self.spriteLeft
 				self.movement = true
-			elseif (love.keyboard.isDown("a") == false and love.keyboard.isDown("d") == true) then
+			elseif (isDown("a") == false and isDown("d") == true) then
 				self.sprite = self.spriteRight
 				self.movement = true
 			else
 				self.movement = false
 			end
 		end
-		if (love.keyboard.isDown("a", "d", "w", "s") == false) then
+
+		if (isDown("a", "d", "w", "s") == false) then
 			self.movement = false
 		end
 
