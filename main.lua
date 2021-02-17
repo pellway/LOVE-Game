@@ -10,11 +10,13 @@ StartState = 1
 PlayState = 2
 PauseState = 3
 
-buttonSelect = 1
+WindowWidth = love.graphics.getWidth()
+WindowHeight = love.graphics.getHeight()
+
 buttonWidth = 300
 buttonHeight = 50
-buttonX = love.graphics.getWidth()/2 - (buttonWidth/2)
-buttonY = love.graphics.getHeight()/1.5
+buttonX = WindowWidth/2 - (buttonWidth/2)
+buttonY = WindowHeight/1.5
 
 math.randomseed(os.time())
 
@@ -26,7 +28,7 @@ function love.load()
 
 	bgm = love.audio.newSource("Audio/bgm.ogg", "stream")
 	sfx = love.audio.newSource("Audio/sfx.wav", "static")
-	--love.audio.setVolume(0) -- To Mute
+	love.audio.setVolume(0) -- To Mute
 
 	player = Player.new(100, 120, 100, 8)
 
@@ -71,19 +73,24 @@ function love.update(dt)
 		-- Function for player movement (Player.Lua)
 		player:move()
 
-		function addInventory(inventory, item)
-			table.insert(inventory, item)
-		end
-
 		function love.keypressed(key, scancode, isrepeat)
-			if key == "b" then -- Adds salmon
-				salmon = Fish.new("Salmon", "B")
-				addInventory(player.inventory, salmon)
+			if key == "b" then -- Adds a random fish
+				if (#player.inventory < player.inventorySize) then 
+					fishList = {"Trout", "Carp", "Salmon", "Tuna"}
+					randomFish = Fish.new(fishList[math.random(#fishList)], "B")
+					table.insert(player.inventory, randomFish)
+				else 
+					io.write("Inventory full!\n") -- FOR MAX INVENTORY SIZE
+				end
+			end
+			if key == "r" then -- Remove inventory item
+				table.remove(player.inventory)
 			end
 			if key == "p" then -- Prints inventory
 				size = table.getn(player.inventory)
 				io.write("Player's current inventory: \n")
 				for i = 1, size do
+					io.write("item "..tostring(i)..".\n")
 					io.write(player.inventory[i]:getDetails())
 				end
 			end
@@ -191,8 +198,8 @@ function love.draw()
 	end
 
 	if (GameState == PlayState) then
-		-- Debug
 		love.graphics.print("Play State", 10, 10)
+
 		love.graphics.print({{0, 0, 0, 1}, "X Position: " .. player.x}, 10, 30)
 		love.graphics.print({{0, 0, 0, 1}, "Y Position: " .. player.y}, 10, 50)
 		love.graphics.print({{0, 0, 0, 1}, "Movement: " .. tostring(player.movement)}, 10, 70)
@@ -201,12 +208,20 @@ function love.draw()
 
 		-- Function for player animation (Player.Lua)
 		player:draw()
-		
+
+		-- TEST for drawing fish sprite
+		if (table.getn(player.inventory) > 0) then
+			for i = 1, #player.inventory do
+				love.graphics.draw(player.inventory[i].sprite, WindowWidth/4+(i*64), WindowHeight-64)
+				--love.graphics.print(num, WindowWidth/2+64, WindowHeight-64, 0, 2)
+			end
+		end
 	end
 
 	if (GameState == PauseState) then
 		love.graphics.print("Pause State", 10, 10)
 
+		-- Menu Buttons
 		resumeButton = love.graphics.newImage("Assets/resumeButton.png")
 		quitButton = love.graphics.newImage("Assets/quitButton.png")
 		love.graphics.draw(resumeButton, buttonX, buttonY)
