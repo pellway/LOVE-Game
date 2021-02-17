@@ -22,6 +22,7 @@ Player.new = function(x, y, speed, inventorySize)
     self.movement = false
     self.speed = speed
 	self.inventory = {}
+	self.inventorySize = 8
 
     -- Class Functions
     self.draw = function()
