@@ -11,5 +11,8 @@ user I/O and general asset pipeline and creation tools.
 * Different environments
 
 ## Resources
-* https://github.com/love2d-community/awesome-love2d
-* Using tiled map editor in love
+https://github.com/love2d-community/awesome-love2d
+https://github.com/kikito/bump.lua
+https://github.com/karai17/Simple-Tiled-Implementation
+
+https://www.google.com/search?q=sti+with+bump+love2d+lua

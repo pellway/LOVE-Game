@@ -4,6 +4,7 @@
 
 require("Scripts.Player")
 require("Scripts.Fish")
+local sti = require("Lib.sti")
 
 GameState = 0
 StartState = 1 
@@ -28,11 +29,12 @@ function love.load()
 
 	bgm = love.audio.newSource("Audio/bgm.ogg", "stream")
 	sfx = love.audio.newSource("Audio/sfx.wav", "static")
-	love.audio.setVolume(0) -- To Mute
-
-	player = Player.new(100, 120, 100, 8)
-
+	--love.audio.setVolume(0) -- To Mute
+	
 	GameState = 1
+
+	map = sti("Maps/map.lua")
+	player = Player.new(100, 120, 100, 8)
 
 end
 
@@ -70,13 +72,15 @@ function love.update(dt)
 		love.graphics.setBackgroundColor(85/255, 85/255, 85/255, 1)
 		love.audio.play(bgm)
 
+		map:update(dt)
+
 		-- Function for player movement (Player.Lua)
 		player:move()
 
 		function love.keypressed(key, scancode, isrepeat)
 			if key == "b" then -- Adds a random fish
 				if (#player.inventory < player.inventorySize) then 
-					fishList = {"Trout", "Carp", "Salmon", "Tuna"}
+					fishList = {"Prawn", "Trout", "Carp", "Salmon", "Tuna"}
 					randomFish = Fish.new(fishList[math.random(#fishList)], "B")
 					table.insert(player.inventory, randomFish)
 				else 
@@ -198,22 +202,23 @@ function love.draw()
 	end
 
 	if (GameState == PlayState) then
-		love.graphics.print("Play State", 10, 10)
+		-- Draws Tiled Map (sti)
+		map:draw()
 
+		love.graphics.print({{0, 0, 0, 1}, "Play State"}, 10, 10)
 		love.graphics.print({{0, 0, 0, 1}, "X Position: " .. player.x}, 10, 30)
 		love.graphics.print({{0, 0, 0, 1}, "Y Position: " .. player.y}, 10, 50)
 		love.graphics.print({{0, 0, 0, 1}, "Movement: " .. tostring(player.movement)}, 10, 70)
 		love.graphics.print({{0, 0, 0, 1}, mouseMove}, 10, 90)
 		love.graphics.print({{0, 0, 0, 1}, mouseButton}, 10, 110)
 
-		-- Function for player animation (Player.Lua)
+		-- Draws player animation (Player.Lua)
 		player:draw()
 
 		-- TEST for drawing fish sprite
-		if (table.getn(player.inventory) > 0) then
+		if (#player.inventory > 0) then
 			for i = 1, #player.inventory do
 				love.graphics.draw(player.inventory[i].sprite, WindowWidth/4+(i*64), WindowHeight-64)
-				--love.graphics.print(num, WindowWidth/2+64, WindowHeight-64, 0, 2)
 			end
 		end
 	end
