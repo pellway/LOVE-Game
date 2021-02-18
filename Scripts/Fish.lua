@@ -62,7 +62,7 @@ Fish.new = function(name, grade)
 		io.write("type: "..self.type.."\n")
 		io.write("size: "..self.size.."cm\n")
 		io.write("grade: "..self.grade.."\n")
-		io.write("value: $"..self.value.."\n")
+		io.write("value: "..self.value.." bits\n")
 		io.write("\n")
 	end
 

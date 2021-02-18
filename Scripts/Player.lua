@@ -33,10 +33,11 @@ Player.new = function(x, y, speed, inventorySize)
         self.x = 100
 		self.y = 120
 		self.sprite = self.spriteFront
+		self.inventory = {}
     end
 
 	-- Player Movement
-	self.move = function()
+	self.move = function(x, y)
 		dt = love.timer.getDelta()
 		local isDown = love.keyboard.isDown
 
@@ -92,18 +93,18 @@ Player.new = function(x, y, speed, inventorySize)
 		end
 
 		-- Boundary collision
-		if (self.x >= love.graphics.getWidth()-64) then
-			self.x = love.graphics.getWidth()-64
-		end
-		if (self.x <= 0) then
-			self.x = 0
-		end
-		if (self.y >= love.graphics.getHeight()-64) then
-			self.y = love.graphics.getHeight()-64
-		end
-		if (self.y <= 0) then
-			self.y = 0
-		end
+		-- if (self.x >= love.graphics.getWidth()-64) then
+		-- 	self.x = love.graphics.getWidth()-64
+		-- end
+		-- if (self.x <= 0) then
+		-- 	self.x = 0
+		-- end
+		-- if (self.y >= love.graphics.getHeight()-64) then
+		-- 	self.y = love.graphics.getHeight()-64
+		-- end
+		-- if (self.y <= 0) then
+		-- 	self.y = 0
+		-- end
 
 		-- If not moving, round to nearest integer
 		if (self.movement == false) then
