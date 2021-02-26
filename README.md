@@ -3,7 +3,7 @@ An exploration into using the LOVE2D Framework for Lua to create short and simpl
 Creating a top-down game with elements of state machines, object-oriented programming in lua,
 user I/O and general asset pipeline and creation tools.
 
-![alt text](https://github.com/pellway/LOVE-Game/screenshot.png)
+![alt text](https://github.com/pellway/LOVE-Game/screenshot.png?raw=true)
 
 ## Game Details
 * Rhythm fishing game
