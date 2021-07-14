@@ -3,6 +3,8 @@ An exploration into using the LOVE2D Framework for Lua to create short and simpl
 Creating a top-down game with elements of state machines, object-oriented programming in lua,
 user I/O and general asset pipeline and creation tools.
 
+# THIS PROJECT IS ARCHIVED. PROJECT PORT TO GMS2.
+
 ![alt text](https://github.com/pellway/LOVE-Game/blob/master/screenshot.png?raw=true)
 
 ## Game Details
@@ -14,7 +16,4 @@ user I/O and general asset pipeline and creation tools.
 
 ## Resources
 https://github.com/love2d-community/awesome-love2d
-https://github.com/kikito/bump.lua
 https://github.com/karai17/Simple-Tiled-Implementation
-
-https://www.google.com/search?q=sti+with+bump+love2d+lua
